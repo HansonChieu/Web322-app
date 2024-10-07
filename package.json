@@ -1,0 +1,23 @@
+{
+  "name": "web322-app",
+  "version": "1.0.0",
+  "description": "eCommerce web app that uses multiple routes, serves static files and a \"store service\" module for accessing data",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "Web",
+    "app",
+    "Javascript",
+    "CSS",
+    "HTML",
+    "eCommerce"
+  ],
+  "author": "Hanson Chieu",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.0"
+  }
+}
