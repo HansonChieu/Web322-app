@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.navbar {
+    display: flex;
+    align-items: center;
+    padding: var(--navbar-padding, 0.5rem);
+    min-height: 4rem;
+    width: 100%;
+    box-shadow:0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .navbar-start {
+    width: 40%;
+    justify-content: flex-start;
+  }
