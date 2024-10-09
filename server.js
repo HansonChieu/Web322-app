@@ -5,7 +5,7 @@ been copied manually or electronically from any other source (including 3rd part
 Name: Hanson Chieu  
 Student ID: 173632233
 Date: October 9, 2024
-Replit Web App URL: https://replit.com/@hansonchieu/Web322-app
+Glitch Web App URL: https://web322-hansonchieu.glitch.me
 GitHub Repository URL: https://github.com/HansonChieu/Web322-app
 ********************************************************************************/
 
