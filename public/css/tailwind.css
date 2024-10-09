@@ -3,15 +3,39 @@
 @tailwind utilities;
 
 .navbar {
-    display: flex;
-    align-items: center;
-    padding: var(--navbar-padding, 0.5rem);
-    min-height: 4rem;
-    width: 100%;
-    box-shadow:0 2px 5px rgba(0, 0, 0, 0.1);
-  }
+  font-family: "Verdana", sans-serif;
+  color: aliceblue;
+  background-color: rgba(5, 5, 29, 0.801);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.863);
+}
 
-  .navbar-start {
-    width: 40%;
-    justify-content: flex-start;
+.navbar-start {
+  width: 37%;
+  justify-content: flex-start;
+}
+
+:where(.menu li) {
+  margin-right: 1.5em;
+}
+
+.dropdown-content {
+  color: black;
+}
+
+@media (hover: hover) {
+  .menu li > *:not(ul, .menu-title, details, .btn):hover {
+    background-color: rgba(19, 19, 49, 0.411);
   }
+}
+
+.text-xl {
+  font-family: "Mulish", sans-serif;
+  font-size: 1.6em;
+  font-weight: 600;
+}
+
+.mulish {
+  font-family: "Mulish", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
