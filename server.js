@@ -1,3 +1,14 @@
+/*********************************************************************************
+WEB322 – Assignment 02
+I declare that this assignment is my own work in accordance with Seneca Academic Policy. No part * of this assignment has
+been copied manually or electronically from any other source (including 3rd party web sites) or distributed to other students.
+Name: Hanson Chieu  
+Student ID: 173632233
+Date: October 9, 2024
+Replit Web App URL: https://replit.com/@hansonchieu/Web322-app
+GitHub Repository URL: https://github.com/HansonChieu/Web322-app
+********************************************************************************/
+
 const express = require("express"); // "require" the Express module
 const app = express(); // obtain the "app" object
 const path = require("path");
