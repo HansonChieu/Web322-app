@@ -78,7 +78,7 @@ module.exports = {
 
   getItemsByCategory: function(category){
     return new Promise ((resolve, reject)=>{
-      const filteredItems = items.filter(item => item.category === parseInt(category,5));
+      const filteredItems = items.filter(item => item.category === parseInt(category,6));
 
       if(filteredItems.length > 0){
         resolve(filteredItems);
