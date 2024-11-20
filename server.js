@@ -256,12 +256,9 @@ app.post("/items/add", upload.single("featureImage"), (req, res) => {
   }
   
 });
-app.get('/404', (req, res) => {
-  res.render('404', { title: '404 - Page Not Found', layout: 'layouts/main' });
-});
 
 app.use((req, res) => {
-  res.status(404).send("Page Not Found");
+  res.status(404).render('404', { title: '404 - Page Not Found', layout: 'layouts/main' });
 });
 
 storeService

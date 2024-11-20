@@ -21,13 +21,13 @@
     <% } %>
   </section>
 
-  <aside class="w-full md:w-1/3 p-4">
+  <aside class="ml-10 w-full md:w-1/4 p-4">
     <div class="bg-white p-6 rounded-lg shadow-lg">
       <% if (data.items) { %>
         <h4 class="text-400 font-semibold text-black mb-4">Items</h4>
         <ul class="list-group space-y-2">
           <% data.items.forEach(function(item) { %>
-            <a href="/shop/<%= item.id %>?category=<%= data.viewingCategory %>" class="block px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg shadow-sm">
+            <a href="/shop/<%= item.id %>?category=<%= data.viewingCategory %>" class="block px-4 py-2 bg-[#cfcfe3] hover:bg-[#bebed1] rounded-lg shadow-sm w-auto">
               <%= item.title %>
             </a>
           <% }); %>
@@ -38,7 +38,7 @@
         <h4 class="text-400 font-semibold mt-8 text-black mb-4">Categories</h4>
         <ul class="list-group space-y-2">
           <% data.categories.forEach(function(category) { %>
-            <a href="/shop?category=<%= category.id %>" class="block px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg shadow-sm">
+            <a href="/shop?category=<%= category.id %>" class="block px-4 py-2 bg-[#cfcfe3] hover:bg-[#bebed1] rounded-lg shadow-sm w-auto">
               <%= category.category %>
             </a>
           <% }); %>
