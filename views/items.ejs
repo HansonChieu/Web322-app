@@ -1,0 +1,40 @@
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="text-2xl font-bold ml-4">Items</h1>
+        <hr class="mt-2">
+        <div class="col-md-12 pt-4">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Item ID</th>
+                    <th>Title</th>
+                    <th>Post Date</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Published</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% items.forEach(item => { %>
+                    <tr>
+                      <td><%= item.id %></td>
+                      <td><%= item.title %></td>
+                      <td><%= item.postDate %></td>
+                      <td><a class ="categoryLink" href="/items?category=<%= item.id %>"><%= item.category %></a></td>
+                      <td><%= item.price %></td>
+                      <td><%= item.published %></td>
+                    </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+          <% if (!items || items.length === 0) { %>
+            <div class="col-md-12 text-center">
+              <strong><%= message %></strong>
+            </div>
+          <% } %>
+    </div>
+</div>

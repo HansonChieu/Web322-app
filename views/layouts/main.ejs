@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Space+Grotesk:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+    <title>Hanson Chieu's Store - <%= title %></title>
+  </head>
+  <body>
+    <div class="navbar fixed z-10 top-0">
+      <div class="navbar-start ">
+        <div class="dropdown">
+          <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h8m-8 6h16"
+              />
+            </svg>
+          </div>
+          <ul
+            tabindex="0"
+            class="menu menu-sm dropdown-content bg-[rgba(5,5,29,0.801)] rounded-box z-[1] mt-3 w-52 p-2 shadow"
+          >
+          <li class="<%= activeRoute === '/shop' ? 'active' : '' %>">
+            <a href="/shop">Shop</a>
+          </li>
+          <li class="<%= activeRoute === '/items/add' ? 'active' : '' %>">
+            <a href="/items/add">Add Item</a>
+          </li>
+          <li class="<%= activeRoute === '/items' ? 'active' : '' %>">
+            <a href="/items">Items</a>
+          </li>
+          <li class="<%= activeRoute === '/categories' ? 'active' : '' %>">
+            <a href="/categories">Categories</a>
+          </li>
+          <li class="<%= activeRoute === '/about' ? 'active' : '' %>">
+            <a href="/about">About</a>
+          </li>
+          </ul>
+        </div>
+        <a class="btn btn-ghost text-xl" href="/about">WEB322-Hanson Chieu</a>
+      </div>
+      <div class="navbar-center hidden lg:flex">
+        <ul class="menu menu-horizontal px-1">
+            <li class="<%= activeRoute === '/shop' ? 'active' : '' %>">
+              <a href="/shop">Shop</a>
+            </li>
+            <li class="<%= activeRoute === '/items/add' ? 'active' : '' %>">
+              <a href="/items/add">Add Item</a>
+            </li>
+            <li class="<%= activeRoute === '/items' ? 'active' : '' %>">
+              <a href="/items">Items</a>
+            </li>
+            <li class="<%= activeRoute === '/categories' ? 'active' : '' %>">
+              <a href="/categories">Categories</a>
+            </li>
+            <li class="<%= activeRoute === '/about' ? 'active' : ''%>">
+              <a href="/about">About</a>
+            </li>
+          </ul>
+      </div>
+    </div>
+    <div class="container mx-auto pt-20">
+        <%- body %>
+    </div>
+  </body>
+</html>
+

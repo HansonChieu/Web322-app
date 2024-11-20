@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 .navbar {
-  font-family: "Verdana", sans-serif;
-  color: aliceblue;
+  font-family:"verdana", sans-serif;
+  color: rgb(159, 161, 163);
   background-color: rgba(5, 5, 29, 0.801);
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.863);
 }
@@ -19,7 +19,7 @@
 }
 
 .dropdown-content {
-  color: black;
+  color: aliceblue;
 }
 
 @media (hover: hover) {
@@ -29,7 +29,8 @@
 }
 
 .text-xl {
-  font-family: "Mulish", sans-serif;
+  font-family: "Mulish", sans-serif !important;
+  color: aliceblue;
   font-size: 1.6em;
   font-weight: 600;
 }
@@ -38,4 +39,19 @@
   font-family: "Mulish", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
+}
+
+.menu li.active a {
+  font-weight:bolder;
+  color: aliceblue; 
+}
+
+.text-2xl{
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 2em;
+}
+
+.categoryLink{
+  color: rgb(99, 132, 241);
+  text-decoration: underline;
 }

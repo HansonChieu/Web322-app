@@ -1,0 +1,36 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-2xl font-bold ml-4">Categories</h1>
+                <hr class="mt-2">
+                <div class="col-md-12 pt-4">
+                    <div class="table-responsive">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th>Category ID</th>
+                            <th>Category Name</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% categories.forEach(category => { %>
+                            <tr>
+                              <td><a class ="categoryLink" href="/categories?id=<%= category.id %>"><%= category.id %></a></td>
+                              <td><a class ="categoryLink" href="/categories?category=<%= category.category%>"><%= category.category%></a></td>
+                            </tr>
+                          <% }) %>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  
+                  <% if (!categories || categories.length === 0) { %>
+                    <div class="col-md-12 text-center">
+                      <strong><%= message %></strong>
+                    </div>
+                  <% } %>
+            </div>
+        </div> 
+    </div>
+</div>

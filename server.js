@@ -1,10 +1,10 @@
 /*********************************************************************************
-WEB322 – Assignment 03
+WEB322 – Assignment 04
 I declare that this assignment is my own work in accordance with Seneca Academic Policy. No part * of this assignment has
 been copied manually or electronically from any other source (including 3rd party web sites) or distributed to other students.
 Name: Hanson Chieu  
 Student ID: 173632233
-Date: November 1, 2024
+Date: November 20, 2024
 Glitch Web App URL: https://web322-hansonchieu.glitch.me
 GitHub Repository URL: https://github.com/HansonChieu/Web322-app
 ********************************************************************************/
@@ -13,10 +13,12 @@ const express = require("express");
 const app = express(); 
 const path = require("path");
 const storeService = require("./store-service.js");
+const itemData = require("./store-service");
 const multer = require("multer");
 const cloudinary = require('cloudinary').v2;
 const streamifier = require('streamifier');
 const {addItem} = require('./store-service');
+const ejsLayouts = require('express-ejs-layouts');
 
 cloudinary.config({
   cloud_name: "dogdadxjy",
@@ -27,53 +29,150 @@ cloudinary.config({
 
 const upload = multer(); // no { storage: storage } since we are not using disk storage
 
+const expressLayouts = require('express-ejs-layouts');
+app.use(expressLayouts); 
+
+
+app.set('view engine', 'ejs');
+app.use(ejsLayouts);
+app.set('layout', 'layouts/main');
+
 app.use(express.static("public"));
 
+app.use(function(req,res,next){
+  let route = req.path.substring(1);
+  app.locals.activeRoute = "/" + (isNaN(route.split('/')[1]) ? route.replace(/\/(?!.*)/, "") : route.replace(/\/(.*)/, ""));
+  app.locals.viewingCategory = req.query.category;
+  next();
+});
+
+
 app.get("/", (req, res) => {
-  res.redirect("/about"); 
+  res.redirect("/shop"); 
 });
 
-app.get("/about", (req, res) => {
-  res.sendFile(path.join(__dirname, "/views/about.html")); 
+app.get('/about', (req, res) => {
+  res.render('about', {title: 'About', layout: 'layouts/main' }); 
 });
 
-app.get("/shop", (req, res) => {
-  storeService
-    .getAllItems()
-    .then((data) => {
-      const publishedItems = data.filter((item) => item.published);
-      res.json(publishedItems);
-    })
-    .catch((err) => {
-      res.status(500).json({ message: err });
-    });
+app.get("/shop", async (req, res) => {
+  // Declare an object to store properties for the view
+  let viewData = {};
+
+  try {
+    // declare empty array to hold "item" objects
+    let items = [];
+
+    // if there's a "category" query, filter the returned items by category
+    if (req.query.category) {
+      // Obtain the published "item" by category
+      items = await itemData.getPublishedItemsByCategory(req.query.category);
+    } else {
+      // Obtain the published "items"
+      items = await itemData.getPublishedItems();
+    }
+
+    // sort the published items by itemDate
+    items.sort((a, b) => new Date(b.itemDate) - new Date(a.itemDate));
+
+    // get the latest item from the front of the list (element 0)
+    let item = items[0];
+
+    // store the "items" and "item" data in the viewData object (to be passed to the view)
+    viewData.items = items;
+    viewData.item = item;
+  } catch (err) {
+    viewData.message = "no results";
+  }
+
+  try {
+    // Obtain the full list of "categories"
+    let categories = await itemData.getCategories();
+
+    // store the "categories" data in the viewData object (to be passed to the view)
+    viewData.categories = categories;
+  } catch (err) {
+    viewData.categoriesMessage = "no results";
+  }
+
+  // render the "shop" view with all of the data (viewData)
+  res.render("shop", { title: "Shop", layout: 'layouts/main', data: viewData });
 });
 
-app.get("/items/add", (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "addItem.html"));
+app.get('/shop/:id', async (req, res) => {
+
+  // Declare an object to store properties for the view
+  let viewData = {};
+
+  try{
+
+      // declare empty array to hold "item" objects
+      let items = [];
+
+      // if there's a "category" query, filter the returned items by category
+      if(req.query.category){
+          // Obtain the published "items" by category
+          items = await itemData.getPublishedItemsByCategory(req.query.category);
+      }else{
+          // Obtain the published "items"
+          items = await itemData.getPublishedItems();
+      }
+
+      // sort the published items by itemDate
+      items.sort((a,b) => new Date(b.itemDate) - new Date(a.itemDate));
+
+      // store the "items" and "item" data in the viewData object (to be passed to the view)
+      viewData.items = items;
+
+  }catch(err){
+      viewData.message = "no results";
+  }
+
+  try{
+      // Obtain the item by "id"
+      viewData.item = await itemData.getItemById(req.params.id);
+  }catch(err){
+      viewData.message = "no results"; 
+  }
+
+  try{
+      // Obtain the full list of "categories"
+      let categories = await itemData.getCategories();
+
+      // store the "categories" data in the viewData object (to be passed to the view)
+      viewData.categories = categories;
+  }catch(err){
+      viewData.categoriesMessage = "no results"
+  }
+
+  // render the "shop" view with all of the data (viewData)
+  res.render("shop", { title: "Shop", layout: 'layouts/main', data: viewData });
 });
 
-app.get("/items", async(req, res) => {
+app.get('/items/add', (req, res) => {
+  res.render('addItem', { title: 'Add New Item', layout: 'layouts/main' });
+});
+
+
+app.get("/items", async (req, res) => {
   try {
     const { category, minDate } = req.query;
 
+    let data;
+    
     if (category) {
-        const itemsByCategory = await storeService.getItemsByCategory(category);
-        return res.json(itemsByCategory);
+      data = await storeService.getItemsByCategory(category);
+    } else if (minDate) {
+      data = await storeService.getItemsByMinDate(minDate);
+    } else {
+      data = await storeService.getAllItems();
     }
+    res.render("items", { title: 'Items',items: data });
 
-    if (minDate) {
-        const itemsByMinDate = await storeService.getItemsByMinDate(minDate);
-        return res.json(itemsByMinDate);
-    }
-
-    const allItems = await storeService.getAllItems(); 
-    return res.json(allItems);
-
-} catch (error) {
+  } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: 'An error occurred while fetching items.' });
-}
+    res.render("posts", { message: "no results" });
+  }
 });
 
 app.get("/item/:id", async (req, res) => {
@@ -103,10 +202,15 @@ app.get("/categories", (req, res) => {
   storeService
     .getCategories()
     .then((data) => {
-      res.json(data);
+      res.render("categories", {title: "Categories", categories:
+        data});
     })
     .catch((err) => {
-      res.status(500).json({ message: err });
+      res.render("categories", {
+        title: "Categories",
+        categories: [],  
+        message: "No results"  
+      });
     });
 });
 
@@ -151,6 +255,9 @@ app.post("/items/add", upload.single("featureImage"), (req, res) => {
       });
   }
   
+});
+app.get('/404', (req, res) => {
+  res.render('404', { title: '404 - Page Not Found', layout: 'layouts/main' });
 });
 
 app.use((req, res) => {

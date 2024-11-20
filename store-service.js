@@ -110,5 +110,25 @@ module.exports = {
         reject("no result returned");
       }
     });
-  }
+  },
+  
+  getPublishedItemsByCategory : function(category){
+    return new Promise((resolve, reject) => {
+      const publishedItems = items.filter((item) => item.published === true && item.category ==category);
+
+      if (publishedItems.length > 0) {
+        resolve(publishedItems);
+      } else {
+        reject("no results returned");
+      }
+    });
+  },
+
+  addItem : function(itemData) {
+    
+    const currentDate = new Date().toISOString().split('T')[0];  
+    itemData.postDate = currentDate;
+    
+    items.push(itemData); 
+}
 };
