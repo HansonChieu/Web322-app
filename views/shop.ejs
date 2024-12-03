@@ -1,48 +1,54 @@
 <div class="flex flex-wrap">
   <section class="main w-full md:w-2/3 p-4">
     <% if (data.item) { %>
-      <article class="bg-white p-6 rounded-lg shadow-lg">
-        <h2 class="text-3xl font-semibold mb-4"><%= data.item.title %></h2>
-        <img src="<%=data.item.featureImage%>" alt="Feature Image" class="h-auto rounded-md mb-4 w-1/2" />
-        <div class="prose">
-          <%- data.item.body %>
-        </div>
-        <div class="mt-6">
-          <strong class="text-lg">Price:</strong> $<%= data.item.price %><br />
-          <strong class="text-lg">Category:</strong> <%= data.item.category %><br />
-          <strong class="text-lg">Last Updated:</strong> <%= data.item.postDate %>
-        </div>
-      </article>
-    <% } else { %>
-      <div class="text-center text-lg font-medium">
-        <h2><%= data.message %></h2>
-        <p class="mt-2">Please try another item / Category</p>
+    <article class="bg-white p-6 rounded-lg shadow-lg">
+      <h2 class="text-3xl font-semibold mb-4"><%= data.item.title %></h2>
+      <img
+        src="<%=data.item.featureImage%>"
+        alt="Feature Image"
+        class="h-auto rounded-md mb-4 w-1/2"
+      />
+      <div class="prose"><%- data.item.body %></div>
+      <div class="mt-6">
+        <strong class="text-lg">Price:</strong> $<%= data.item.price %><br />
+        <strong class="text-lg">Category:</strong> <%= data.item.category %><br />
+        <strong class="text-lg">Last Updated:</strong> <%= data.item.postDate %>
       </div>
+    </article>
+    <% } else { %>
+    <div class="text-center text-lg font-medium">
+      <h2><%= data.message %></h2>
+      <p class="mt-2">Please try another item / Category</p>
+    </div>
     <% } %>
   </section>
 
   <aside class="ml-10 w-full md:w-1/4 p-4">
     <div class="bg-white p-6 rounded-lg shadow-lg">
       <% if (data.items) { %>
-        <h4 class="text-400 font-semibold text-black mb-4">Items</h4>
-        <ul class="list-group space-y-2">
-          <% data.items.forEach(function(item) { %>
-            <a href="/shop/<%= item.id %>?category=<%= data.viewingCategory %>" class="block px-4 py-2 bg-[#cfcfe3] hover:bg-[#bebed1] rounded-lg shadow-sm w-auto">
-              <%= item.title %>
-            </a>
-          <% }); %>
-        </ul>
-      <% } %>
-
-      <% if (data.categories) { %>
-        <h4 class="text-400 font-semibold mt-8 text-black mb-4">Categories</h4>
-        <ul class="list-group space-y-2">
-          <% data.categories.forEach(function(category) { %>
-            <a href="/shop?category=<%= category.id %>" class="block px-4 py-2 bg-[#cfcfe3] hover:bg-[#bebed1] rounded-lg shadow-sm w-auto">
-              <%= category.category %>
-            </a>
-          <% }); %>
-        </ul>
+      <h4 class="text-400 font-semibold text-black mb-4">Items</h4>
+      <ul class="list-group space-y-2">
+        <% data.items.forEach(function(item) { %>
+        <a
+          href="/shop/<%= item.id %>?category=<%= data.viewingCategory %>"
+          class="block px-4 py-2 bg-[#cfcfe3] hover:bg-[#bebed1] rounded-lg shadow-sm w-auto"
+        >
+          <%= item.title %>
+        </a>
+        <% }); %>
+      </ul>
+      <% } %> <% if (data.categories) { %>
+      <h4 class="text-400 font-semibold mt-8 text-black mb-4">Categories</h4>
+      <ul class="list-group space-y-2">
+        <% data.categories.forEach(function(category) { %>
+        <a
+          href="/shop?category=<%= category.id %>"
+          class="block px-4 py-2 bg-[#cfcfe3] hover:bg-[#bebed1] rounded-lg shadow-sm w-auto"
+        >
+          <%= category.category %>
+        </a>
+        <% }); %>
+      </ul>
       <% } %>
     </div>
   </aside>

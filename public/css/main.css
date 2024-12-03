@@ -1734,6 +1734,21 @@ html {
   flex-shrink: 0;
 }
 
+.radio {
+  flex-shrink: 0;
+  --chkbg: var(--bc);
+  height: 1.5rem;
+  width: 1.5rem;
+  cursor: pointer;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border-radius: 9999px;
+  border-width: 1px;
+  border-color: var(--fallback-bc,oklch(var(--bc)/var(--tw-border-opacity)));
+  --tw-border-opacity: 0.2;
+}
+
 .select {
   display: inline-flex;
   cursor: pointer;
@@ -2303,6 +2318,32 @@ html {
   }
 }
 
+.radio:focus {
+  box-shadow: none;
+}
+
+.radio:focus-visible {
+  outline-style: solid;
+  outline-width: 2px;
+  outline-offset: 2px;
+  outline-color: var(--fallback-bc,oklch(var(--bc)/1));
+}
+
+.radio:checked,
+  .radio[aria-checked="true"] {
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-bc,oklch(var(--bc)/var(--tw-bg-opacity)));
+  background-image: none;
+  animation: radiomark var(--animation-input, 0.2s) ease-out;
+  box-shadow: 0 0 0 4px var(--fallback-b1,oklch(var(--b1)/1)) inset,
+      0 0 0 4px var(--fallback-b1,oklch(var(--b1)/1)) inset;
+}
+
+.radio:disabled {
+  cursor: not-allowed;
+  opacity: 0.2;
+}
+
 @keyframes radiomark {
   0% {
     box-shadow: 0 0 0 12px var(--fallback-b1,oklch(var(--b1)/1)) inset,
@@ -2738,12 +2779,12 @@ html {
   margin-left: 2.5rem;
 }
 
-.ml-4 {
-  margin-left: 1rem;
-}
-
 .ml-6 {
   margin-left: 1.5rem;
+}
+
+.mr-10 {
+  margin-right: 2.5rem;
 }
 
 .mr-4 {
@@ -2872,6 +2913,10 @@ html {
 
 .justify-center {
   justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
 }
 
 .gap-4 {
@@ -3140,19 +3185,22 @@ html {
 }
 
 .navbar {
-  font-family:"verdana", sans-serif;
+  font-family: "verdana", sans-serif;
   color: rgb(159, 161, 163);
-  background-color: rgba(5, 5, 29, 0.801);
+  background-color:
+rgba(5, 5, 29, 0.801);
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.863);
 }
 
-.navbar-start {
+.navbar-start
+{
   width: 37%;
   justify-content: flex-start;
 }
 
 :where(.menu li) {
-  margin-right: 1.5em;
+  margin-right:
+1.5em;
 }
 
 .dropdown-content {
@@ -3160,8 +3208,10 @@ html {
 }
 
 @media (hover: hover) {
-  .menu li > *:not(ul, .menu-title, details, .btn):hover {
-    background-color: rgba(19, 19, 49, 0.411);
+  .menu
+li > *:not(ul, .menu-title, details, .btn):hover {
+    background-color: rgba(19,
+19, 49, 0.411);
   }
 }
 
@@ -3173,23 +3223,27 @@ html {
 }
 
 .mulish {
-  font-family: "Mulish", sans-serif;
+  font-family:
+"Mulish", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
 }
 
-.menu li.active a {
-  font-weight:bolder;
+.menu
+li.active a {
+  font-weight: bolder;
   color: aliceblue;
 }
 
-.text-2xl{
-  font-family: Arial, Helvetica, sans-serif;
+.text-2xl {
+  font-family:
+Arial, Helvetica, sans-serif;
   font-size: 2em;
 }
 
-.categoryLink{
-  color: rgb(99, 132, 241);
+.categoryLink {
+  color: rgb(99,
+132, 241);
   text-decoration: underline;
 }
 
