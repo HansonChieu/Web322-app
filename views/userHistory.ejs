@@ -1,0 +1,38 @@
+<div class="bg-gray-100 flex justify-center items-center min-h-screen">
+  <!-- History Container -->
+  <div class="w-full max-w-4xl p-6 bg-white rounded-lg shadow-lg">
+    <!-- History Title -->
+    <h2 class="text-2xl font-bold text-center mb-4">
+      Login History - <%= session.user.userName %> ( <%= session.user.email %> )
+    </h2>
+
+    <!-- Login History Table -->
+    <table class="min-w-full table-auto border-collapse">
+      <thead>
+        <tr>
+          <th class="px-4 py-2 text-left bg-gray-200 text-gray-700">
+            Login Date/Time
+          </th>
+          <th class="px-4 py-2 text-left bg-gray-200 text-gray-700">
+            Client Information
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (session.user.loginHistory && session.user.loginHistory.length >
+        0) { %> <% session.user.loginHistory.forEach(function(login) { %>
+        <tr class="border-b hover:bg-gray-50">
+          <td class="px-4 py-2 text-gray-700"><%= login.dateTime %></td>
+          <td class="px-4 py-2 text-gray-700"><%= login.userAgent %></td>
+        </tr>
+        <% }); %> <% } else { %>
+        <tr>
+          <td colspan="2" class="px-4 py-2 text-center text-gray-500">
+            No login history available.
+          </td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,24 +1,26 @@
 /*********************************************************************************
-WEB322 – Assignment 05
+WEB322 – Assignment 06
 I declare that this assignment is my own work in accordance with Seneca Academic Policy. No part * of this assignment has
 been copied manually or electronically from any other source (including 3rd party web sites) or distributed to other students.
 Name: Hanson Chieu  
 Student ID: 173632233
-Date: December 02, 2024
+Date: December 11, 2024
 Glitch Web App URL: https://web322-hansonchieu.glitch.me
 GitHub Repository URL: https://github.com/HansonChieu/Web322-app
 ********************************************************************************/
-
+const authData = require('./auth-service.js');
+const clientSessions = require('client-sessions');
 const express = require("express");
 const app = express();
 const path = require("path");
-const storeService = require("./store-service.js");
+const storeService = require("./store-service");
 const itemData = require("./store-service");
 const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
 const streamifier = require("streamifier");
 const { addItem } = require("./store-service");
 const ejsLayouts = require("express-ejs-layouts");
+const bodyParser = require('body-parser');
 
 cloudinary.config({
   cloud_name: "dogdadxjy",
@@ -31,12 +33,32 @@ const upload = multer(); // no { storage: storage } since we are not using disk 
 
 const expressLayouts = require("express-ejs-layouts");
 app.use(expressLayouts);
-
+app.set('views', path.join(__dirname, 'views')); 
 app.set("view engine", "ejs");
 app.use(ejsLayouts);
 app.set("layout", "layouts/main");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
+
+app.use(clientSessions({
+  cookieName: "session", 
+  secret: "web322-appHanson", 
+  duration: 24 * 60 * 60 * 1000, 
+  activeDuration: 1000 * 60,
+}));
+
+app.use((req, res, next) => {
+  res.locals.session = req.session;
+  next();
+});
+
+function ensureLogin(req, res, next) {
+  if (!req.session.user) {
+      return res.redirect('/login'); 
+  }else{
+  next();
+  }
+}
 
 app.use(function (req, res, next) {
   let route = req.path.substring(1);
@@ -148,7 +170,9 @@ app.get("/shop/:id", async (req, res) => {
   res.render("shop", { title: "Shop", layout: "layouts/main", data: viewData });
 });
 
-app.get("/items/add", async (req, res) => {
+
+
+app.get("/items/add", ensureLogin,async (req, res) => {
   try {
     const categories = await storeService.getCategories();
     res.render("addItem", {
@@ -166,7 +190,7 @@ app.get("/items/add", async (req, res) => {
   }
 });
 
-app.get("/items", async (req, res) => {
+app.get("/items", ensureLogin, async (req, res) => {
   try {
     const { category, minDate } = req.query;
     let data;
@@ -197,7 +221,7 @@ app.get("/items", async (req, res) => {
   }
 });
 
-app.get("/item/:id", async (req, res) => {
+app.get("/item/:id", ensureLogin, async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -223,7 +247,7 @@ app.get("/item/:id", async (req, res) => {
   }
 });
 
-app.get("/categories", (req, res) => {
+app.get("/categories", ensureLogin, (req, res) => {
   storeService
     .getCategories()
     .then((data) => {
@@ -247,7 +271,7 @@ app.get("/categories", (req, res) => {
     });
 });
 
-app.post("/items/add", upload.single("featureImage"), (req, res) => {
+app.post("/items/add", ensureLogin, upload.single("featureImage"), (req, res) => {
   if (req.file) {
     let streamUpload = (req) => {
       return new Promise((resolve, reject) => {
@@ -289,12 +313,12 @@ app.post("/items/add", upload.single("featureImage"), (req, res) => {
   }
 });
 
-app.get('/categories/add', (req, res) => {
+app.get('/categories/add', ensureLogin, (req, res) => {
   res.render('addCategory', { title: 'Add Categories' });
 });
 
 
-app.post('/categories/add', (req, res) => {
+app.post('/categories/add', ensureLogin, (req, res) => {
   storeService.addCategory(req.body)  
       .then(() => {
           res.redirect('/categories'); 
@@ -304,7 +328,7 @@ app.post('/categories/add', (req, res) => {
       });
 });
 
-app.get('/categories/delete/:id', (req, res) => {
+app.get('/categories/delete/:id', ensureLogin, (req, res) => {
   const categoryId = req.params.id;
 
   storeService.deleteCategoryById(categoryId)
@@ -316,7 +340,7 @@ app.get('/categories/delete/:id', (req, res) => {
       });
 });
 
-app.get('/items/delete/:id', (req, res) => {
+app.get('/items/delete/:id',ensureLogin, (req, res) => {
   const itemId = req.params.id;
 
   storeService.deletePostById(itemId)
@@ -328,20 +352,60 @@ app.get('/items/delete/:id', (req, res) => {
       });
 });
 
+storeService.initialize()
+.then(authData.initialize)
+.then(function(){
+  const HTTP_PORT = process.env.PORT || 8080;
+    app.listen(HTTP_PORT, function(){
+        console.log("app listening on: " + HTTP_PORT)
+    });
+}).catch(function(err){
+    console.log("unable to start server: " + err);
+});
+
+
+app.get("/login", (req, res) => {
+  res.render('login', { errorMessage: "", session: req.session });
+});
+
+app.get("/register", (req, res) => {
+  res.render('register', { errorMessage: "", successMessage: "", session: req.session });
+});
+
+app.post("/register", (req, res) => {
+  authData.registerUser(req.body).then(() => {
+      res.render('register', { successMessage: "User created", errorMessage: '', session: req.session });
+  }).catch((err) => {
+      res.render('register', { errorMessage: err, userName: req.body.userName, successMessage: null, session: req.session});
+  });
+});
+
+app.post("/login", (req, res) => {
+  req.body.userAgent = req.get('User-Agent');
+  authData.checkUser(req.body).then((user) => {
+      req.session.user = {
+          userName: user.userName,
+          email: user.email,
+          loginHistory: user.loginHistory
+      };
+      res.redirect('/shop');
+  }).catch((err) => {
+      res.render('login', {errorMessage: err, userName: req.body.userName, session: req.session});
+  });
+});
+
+app.get("/logout", (req, res) => {
+  req.session.reset();
+  res.redirect('/');
+});
+
+app.get("/userHistory", ensureLogin, (req, res) => {
+  res.render('userHistory');
+});
+
 app.use((req, res) => {
   res
     .status(404)
     .render("404", { title: "404 - Page Not Found", layout: "layouts/main" });
 });
 
-storeService
-  .initialize()
-  .then(() => {
-    const HTTP_PORT = process.env.PORT || 8080;
-    app.listen(HTTP_PORT, () =>
-      console.log(`server listening on: ${HTTP_PORT}`),
-    );
-  })
-  .catch((error) => {
-    console.error("Failed to initialize data:", error);
-  });

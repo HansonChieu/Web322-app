@@ -39,9 +39,11 @@
             <td><%= item.price %></td>
             <td><%= item.published %></td>
             <td>
-              <a href="/items/delete/<%= item.id %>"
+              <a
+                href="/items/delete/<%= item.id %>"
                 class="btn btn-danger"
-                onclick="return confirm('Are you sure you want to delete this item?')">
+                onclick="return confirm('Are you sure you want to delete this item?')"
+              >
                 Remove
               </a>
             </td>

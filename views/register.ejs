@@ -1,0 +1,33 @@
+<div class="max-w-xl mx-auto p-4">
+  <h2 class="text-2xl font-semibold mb-4">Register</h2>
+  <hr class="mb-4">
+  
+  <% if (errorMessage) { %>
+      <div class="bg-red-500 text-white p-3 rounded mb-4">
+          <strong>Error:</strong> <%= errorMessage %>
+      </div>
+  <% } %>
+  
+  <% if (successMessage) { %>
+      <div class="bg-green-500 text-white p-3 rounded mb-4">
+          <strong>Success:</strong> <%= successMessage %>
+      </div>
+      <a class="btn btn-success inline-block mt-4 bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600" href="/login">Proceed to Log in</a>
+  <% } else { %>
+      <form method="post" action="/register" autocomplete="off">
+          <div class="mb-4">
+              <input class="w-full p-3 border border-gray-300 rounded" id="userName" name="userName" type="text" placeholder="User Name" required value="<%= (session.user ? session.user.userName : '') %>">
+          </div>
+          <div class="mb-4">
+              <input class="w-full p-3 border border-gray-300 rounded" id="password" name="password" type="password" placeholder="Password" required>
+          </div>
+          <div class="mb-4">
+              <input class="w-full p-3 border border-gray-300 rounded" id="password2" name="password2" type="password" placeholder="Confirm Password" required>
+          </div>
+          <div class="mb-4">
+              <input class="w-full p-3 border border-gray-300 rounded" id="email" name="email" type="email" placeholder="Email Address" required>
+          </div>
+          <input type="submit" class="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600 float-right" value="Register">
+      </form>
+  <% } %>
+</div>

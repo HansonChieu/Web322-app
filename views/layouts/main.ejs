@@ -10,7 +10,8 @@
       href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Space+Grotesk:wght@300..700&display=swap"
       rel="stylesheet"
     />
-    <title>Hanson Chieu's Store - <%= title %></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Hanson Chieu's Store </title>
   </head>
   <body>
     <div class="navbar fixed z-10 top-0">
@@ -52,8 +53,8 @@
         </div>
         <a class="btn btn-ghost text-xl" href="/about">WEB322-Hanson Chieu</a>
       </div>
-      <div class="navbar-center hidden lg:flex">
-        <ul class="menu menu-horizontal px-1">
+      <div class="navbar-center hidden lg:flex mr-20">
+        <ul class="menu menu-horizontal">
           <li class="<%= activeRoute === '/shop' ? 'active' : '' %>">
             <a href="/shop">Shop</a>
           </li>
@@ -67,6 +68,52 @@
             <a href="/about">About</a>
           </li>
         </ul>
+      </div>
+
+      <div class="navbar-end mr-20">
+        <% if (session && session.user) { %>
+        <div class="dropdown dropdown-end">
+          <label tabindex="0" class="btn bg-gray-500 text-white p-2">
+            <span class="icon material-icons account-icon"><i class="fa-solid fa-circle-user"></i></span>
+            <span class="ml-2"><%= session.user.userName %></span>
+            <svg
+              class="ml-2 h-4 w-4"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </label>
+          <ul
+            tabindex="0"
+            class="menu menu-sm dropdown-content bg-[rgba(5,5,29,0.801)] rounded-box z-[1] mt-3 mr-2 w-40 p-2 shadow""
+          >
+            <li>
+              <a href="/userHistory">User History</a>
+            </li>
+            <li>
+              <a href="/logout">Log Out</a>
+            </li>
+          </ul>
+        </div>
+        <% } else { %>
+        <div class="flex space-x-2">
+          <a href="/register" class="btn btn-success p-4">
+            <span class="icon material-icons"><i class="fa-solid fa-gear"></i></span
+            >&nbsp;&nbsp;Register
+          </a>
+          <a href="/login" class="btn btn-primary p-4">
+            <span class="icon material-icons"><i class="fa-solid fa-angle-right"></i></span>&nbsp;&nbsp;Log In
+          </a>
+        </div>
+        <% } %>
       </div>
     </div>
     <div class="container mx-auto pt-20"><%- body %></div>

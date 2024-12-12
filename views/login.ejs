@@ -1,0 +1,58 @@
+<div class="bg-gray-100 flex justify-center items-center min-h-screen">
+  <!-- Login Container -->
+  <div class="w-full max-w-sm p-6 bg-white rounded-lg shadow-lg">
+    <h2 class="text-2xl font-bold text-center mb-4">Login</h2>
+
+    <% if (errorMessage) { %>
+      <div class="alert alert-danger">
+          <strong>Error:</strong> <%= errorMessage %>
+      </div>
+  <% } %>
+
+    <!-- Login Form -->
+    <form action="/login" method="POST" class="space-y-4" autocomplete="off">
+      <!-- User Name -->
+      <div>
+        <label for="userName" class="block text-sm font-semibold text-gray-700"
+          >User Name</label
+        >
+        <input
+          type="text"
+          id="userName"
+          name="userName"
+          class="w-full mt-1 p-2 border border-gray-300 rounded-md"
+          placeholder="User Name"
+          autocomplete="off"
+          required
+          value="<%= (session.user ? session.user.userName : '') %>"
+        />
+      </div>
+
+      <!-- Password -->
+      <div>
+        <label for="password" class="block text-sm font-semibold text-gray-700"
+          >Password</label
+        >
+        <input
+          type="password"
+          id="password"
+          name="password"
+          class="w-full mt-1 p-2 border border-gray-300 rounded-md"
+          autocomplete="off"
+          placeholder="Password"
+          required
+        />
+      </div>
+
+      <!-- Submit Button -->
+      <div>
+        <button
+          type="submit"
+          class="w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+          value = "login">
+          Login
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
